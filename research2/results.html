@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <h2 class="logo"><a href="index.html">Back to Home</a></h2> <!--Logo which links to sample3 page -->
+            <input type="checkbox" id="menu-toggler"> 
+            
+            <label for="menu-toggler" id="hamburger-btn">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px">
+                    <path d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M3 18h18v-2H3v2zm0-5h18V11H3v2zm0-7v2h18V6H3z"/>
+                </svg>
+            </label>
+            <!-- navigation links -->
+            <ul class="all-links">
+                <li><a href="index.html#home">Main Page</a></li>
+                <li><a href="index.html#services">Exercise</a></li>
+                <li><a href="index.html#portfolio">Mental Wellness</a></li>
+                <li><a href="index.html#health">Nutrition</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <a href="index.html#tracker">Calories</a>
+            </ul>
+            <div class="dropdown">
+                <button class="dropbtn">MENU</button>
+                <div class="dropdown-content">
+                    <a href="index.html#home">Main Page</a>
+                    <a href="index.html#services">Exercise</a>
+                    <a href="index.html#portfolio">Mental Wellness</a>
+                    <a href="index.html#health">Health</a>
+                    <a href="index.html#contact">Contact</a>
+                    <a href="index.html#tracker">Calories</a>
+
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- displaying search results (old version)-->
+    
+    <section class="search-results">
+        <h1>Search Results</h1>
+        <div id="results"></div> 
+    </section>
+
+    <!--javascript to handle search function & also show results-->
+    
+    <script>
+        //search.js code in here
+        
+        // When an HTML document is loaded into a web browser, it becomes a document object.
+        //  document object is accessed with: document
+        // The addEventListener() method attaches an event handler to a document. w3schools
+
+        // function waits until the entire page content has loaded before running the script
+        document.addEventListener('DOMContentLoaded', () => {
+            // retrieve the search query from the URL parameters
+            // search query is what the user searches
+            // in the page url it looks like results.html?query=yoga (if i search yoga)
+            // the key is query and the value is yoga
+            const params = new URLSearchParams(window.location.search); // params assigned to ?query=yoga
+             // URLSearchParams is used to get the query parameters from the URL
+            // window.location.search contains the query string part of the URL
+           
+            // search query is a word or phrase that a user types into a search box to find specific information. 
+            // get method retrieves the value that is associated w a given key from the query string
+            // it will get yoga since thats the value
+            // tolowercase method so it doesnt matter what user types yoga, Yoga or YOGA are all valid
+            const query = params.get('query').toLowerCase(); 
+           
+            const resultsDiv = document.getElementById('results'); // selects the div where the search results will be displayed.
+            // above in results.html theres a <div> id=results
+            // getElementsbyID method selects an HTML element with the id attribute set to 'results'.
+            // This <div> is where the search results will be displayed.
+
+
+            // This list serves as the data source for the search 
+            // When a user searches for a term, the script will filter this list to find matching items based on the search query
+            const contentList = [ // This array contains the content that can be searched. 
+            //Each item in the array is an object with title, content, and url properties.
+                { title: 'Main', content: 'Welcome!', url: 'sample3.html#home' },
+                { title: 'Exercise', content: 'Explore activities & exercises. Walking', url: 'index.html#services' },
+                { title: 'Mental Wellness', content: 'Learn about mental wellness.', url: 'index.html#portfolio' },
+                { title: 'Nutrition', content: 'Keep up with your nutrition here.', url: 'index.html#health' },
+                { title: 'Contact', content: 'Contact us here.', url: 'index.html#contact' },
+                { title: 'Calories', content: 'Track your calories here.', url: 'index.html#tracker' },
+            ];
+
+
+            // checks if a search query is present. If there is a query, it filters the content list
+            if (query) { 
+                const results = contentList.filter(item => 
+                    item.title.toLowerCase().includes(query) || item.content.toLowerCase().includes(query)
+                );
+
+                if (results.length > 0) {
+                    //  iterates over each item in the results array and creates a div element to display the result.
+                    results.forEach(item => {
+                        const resultItem = document.createElement('div');
+                        // sets the HTML of the div to include a clickable link to the relevant section.
+                        resultItem.innerHTML = `<h3><a href="${item.url}">${item.title}</a></h3><p>${item.content}</p>`;
+                        resultsDiv.appendChild(resultItem);
+                    });
+                } else {
+                    resultsDiv.innerHTML = 'No results found.';
+                    // need to redirect back to home page
+                }
+            }
+            
+        });
+        
+        
+
+        /*
+        document.addEventListener('DOMContentLoaded', () => {          
+            const params = new URLSearchParams(window.location.search); 
+            const query = params.get('query').toLowerCase();       
+            const resultsDiv = document.getElementById('results');
+
+           //instead of contentlist [] , fetch data from json file
+           // makes an http request to fetch the content json file from the server
+            fetch('searchcontent.json')
+
+                .then(response => response.json()) // method provided by the Response object from Fetch API
+                //once the fetch is done, it gives us a response.
+                //response.json() reads the response and converts it into a JavaScript object (or array).
+            // contentlist will be the data from the json file
+
+                .then(contentList => { 
+                    // checks if a search query is present. If there is a query, it filters the content list
+                if (query) { 
+                 const results = contentList.filter(item =>item.title.toLowerCase().includes(query) || item.content.toLowerCase().includes(query));
+
+                if (results.length > 0) {
+                    //  iterates over each item in the results array and creates a div element to display the result.
+                    results.forEach(item => {
+                        const resultItem = document.createElement('div');
+                        // sets the HTML of the div to include a clickable link to the relevant section.
+                        resultItem.innerHTML = `<h3><a href="${item.url}">${item.title}</a></h3><p>${item.content}</p>`;
+                        resultsDiv.appendChild(resultItem);
+                    }); 
+
+                } else {
+                    resultsDiv.InnerHTML = "No results found."
+                }
+            }
+        }) // end of .then(contentList)
+
+        .catch(error => {
+            console.error('Error fetching the content list:', error); // Log any errors
+            resultsDiv.innerHTML = 'Error loading search results.'; // Display an error message
+        });
+}); // end document
+        */
+
+            
+
+                
+
+        
+
+
+
+
+        
+    </script>
+</body>
+</html>

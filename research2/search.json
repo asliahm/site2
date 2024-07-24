@@ -1,0 +1,58 @@
+[
+
+    {
+        "title": "Main",
+        "content": "Welcome!",
+        "url": "sample3.html#home"
+
+    },
+
+    { 
+
+     "title": "Exercise",
+     "content": "Explore activities & exercises. Walking", 
+     "url": "sample3.html#services"
+
+    },
+
+    { 
+
+    "title": "Mental Wellness", 
+    "content": "Learn about mental wellness.", 
+    "url": "sample3.html#portfolio" 
+
+    },
+
+    { 
+
+    "title": "Nutrition", 
+    "content": "Keep up with your nutrition here.", 
+    "url": "sample3.html#health"
+
+    },
+                
+    { 
+    "title": "Contact", 
+    "content": "Contact us here.", 
+    "url": "sample3.html#contact" 
+    },
+                
+    { 
+
+    "title": "Calories", 
+    "content": "Track your calories here.",
+    "url": "sample3.html#contact" 
+
+    }
+    
+    
+    
+    
+    
+    
+
+
+
+
+]
+
